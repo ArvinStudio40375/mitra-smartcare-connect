@@ -353,28 +353,32 @@ const MitraDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted/10 to-primary/5">
+    <div className="min-h-screen bg-muted/30">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-6xl mx-auto px-4 py-4">
+      <div className="bg-gradient-to-r from-primary via-primary-glow to-secondary shadow-lg">
+        <div className="max-w-6xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-glow rounded-full flex items-center justify-center">
-                <span className="text-lg font-bold text-white">SC</span>
+              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/30">
+                <span className="text-xl font-bold text-white">SC</span>
               </div>
               <div>
-                <h1 className="font-bold text-xl text-foreground">SmartCare Mitra</h1>
-                <p className="text-sm text-muted-foreground">{currentPartner.business_name}</p>
+                <h1 className="font-bold text-2xl text-white">SmartCare Mitra</h1>
+                <p className="text-white/80">{currentPartner.business_name}</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <div className="text-right">
-                <p className="text-sm text-muted-foreground">Saldo</p>
-                <p className="font-bold text-lg text-primary">
-                  Rp {currentPartner.balance.toLocaleString()}
-                </p>
-              </div>
-              <Button onClick={logout} variant="outline" size="sm">
+              <Card className="bg-white/10 border-white/20 backdrop-blur-sm">
+                <CardContent className="p-3">
+                  <div className="text-center">
+                    <p className="text-xs text-white/70">Saldo Tersedia</p>
+                    <p className="font-bold text-lg text-white">
+                      Rp {currentPartner.balance.toLocaleString()}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+              <Button onClick={logout} variant="outline" size="sm" className="bg-white/10 border-white/30 text-white hover:bg-white/20">
                 <LogOut className="w-4 h-4 mr-2" />
                 Keluar
               </Button>
@@ -383,90 +387,245 @@ const MitraDashboard = () => {
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 py-6">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6 bg-white shadow-sm">
-            <TabsTrigger value="beranda" className="flex items-center gap-2">
-              <Home className="w-4 h-4" />
+      {/* Navigation Grid */}
+      <div className="max-w-6xl mx-auto px-4 -mt-8 relative z-10">
+        <div className="grid grid-cols-3 md:grid-cols-6 gap-4 mb-8">
+          <button 
+            onClick={() => setActiveTab("beranda")}
+            className={`p-4 rounded-xl text-center transition-all ${
+              activeTab === "beranda" 
+                ? "bg-white shadow-lg border-2 border-primary/20 scale-105" 
+                : "bg-white shadow-md hover:shadow-lg hover:scale-105"
+            }`}
+          >
+            <div className={`w-12 h-12 mx-auto mb-2 rounded-xl flex items-center justify-center ${
+              activeTab === "beranda" ? "bg-gradient-to-br from-primary to-primary-glow" : "bg-muted"
+            }`}>
+              <Home className={`w-6 h-6 ${activeTab === "beranda" ? "text-white" : "text-muted-foreground"}`} />
+            </div>
+            <span className={`text-sm font-medium ${activeTab === "beranda" ? "text-primary" : "text-muted-foreground"}`}>
               Beranda
-            </TabsTrigger>
-            <TabsTrigger value="pesanan" className="flex items-center gap-2">
-              <ClipboardList className="w-4 h-4" />
+            </span>
+          </button>
+
+          <button 
+            onClick={() => setActiveTab("pesanan")}
+            className={`p-4 rounded-xl text-center transition-all ${
+              activeTab === "pesanan" 
+                ? "bg-white shadow-lg border-2 border-primary/20 scale-105" 
+                : "bg-white shadow-md hover:shadow-lg hover:scale-105"
+            }`}
+          >
+            <div className={`w-12 h-12 mx-auto mb-2 rounded-xl flex items-center justify-center ${
+              activeTab === "pesanan" ? "bg-gradient-to-br from-primary to-primary-glow" : "bg-muted"
+            }`}>
+              <ClipboardList className={`w-6 h-6 ${activeTab === "pesanan" ? "text-white" : "text-muted-foreground"}`} />
+            </div>
+            <span className={`text-sm font-medium ${activeTab === "pesanan" ? "text-primary" : "text-muted-foreground"}`}>
               Pesanan
-            </TabsTrigger>
-            <TabsTrigger value="pekerjaan" className="flex items-center gap-2">
-              <Briefcase className="w-4 h-4" />
+            </span>
+          </button>
+
+          <button 
+            onClick={() => setActiveTab("pekerjaan")}
+            className={`p-4 rounded-xl text-center transition-all ${
+              activeTab === "pekerjaan" 
+                ? "bg-white shadow-lg border-2 border-primary/20 scale-105" 
+                : "bg-white shadow-md hover:shadow-lg hover:scale-105"
+            }`}
+          >
+            <div className={`w-12 h-12 mx-auto mb-2 rounded-xl flex items-center justify-center ${
+              activeTab === "pekerjaan" ? "bg-gradient-to-br from-primary to-primary-glow" : "bg-muted"
+            }`}>
+              <Briefcase className={`w-6 h-6 ${activeTab === "pekerjaan" ? "text-white" : "text-muted-foreground"}`} />
+            </div>
+            <span className={`text-sm font-medium ${activeTab === "pekerjaan" ? "text-primary" : "text-muted-foreground"}`}>
               Pekerjaan
-            </TabsTrigger>
-            <TabsTrigger value="topup" className="flex items-center gap-2">
-              <CreditCard className="w-4 h-4" />
+            </span>
+          </button>
+
+          <button 
+            onClick={() => setActiveTab("topup")}
+            className={`p-4 rounded-xl text-center transition-all ${
+              activeTab === "topup" 
+                ? "bg-white shadow-lg border-2 border-primary/20 scale-105" 
+                : "bg-white shadow-md hover:shadow-lg hover:scale-105"
+            }`}
+          >
+            <div className={`w-12 h-12 mx-auto mb-2 rounded-xl flex items-center justify-center ${
+              activeTab === "topup" ? "bg-gradient-to-br from-primary to-primary-glow" : "bg-muted"
+            }`}>
+              <CreditCard className={`w-6 h-6 ${activeTab === "topup" ? "text-white" : "text-muted-foreground"}`} />
+            </div>
+            <span className={`text-sm font-medium ${activeTab === "topup" ? "text-primary" : "text-muted-foreground"}`}>
               Top Up
-            </TabsTrigger>
-            <TabsTrigger value="chat" className="flex items-center gap-2">
-              <MessageCircle className="w-4 h-4" />
+            </span>
+          </button>
+
+          <button 
+            onClick={() => setActiveTab("chat")}
+            className={`p-4 rounded-xl text-center transition-all ${
+              activeTab === "chat" 
+                ? "bg-white shadow-lg border-2 border-primary/20 scale-105" 
+                : "bg-white shadow-md hover:shadow-lg hover:scale-105"
+            }`}
+          >
+            <div className={`w-12 h-12 mx-auto mb-2 rounded-xl flex items-center justify-center ${
+              activeTab === "chat" ? "bg-gradient-to-br from-primary to-primary-glow" : "bg-muted"
+            }`}>
+              <MessageCircle className={`w-6 h-6 ${activeTab === "chat" ? "text-white" : "text-muted-foreground"}`} />
+            </div>
+            <span className={`text-sm font-medium ${activeTab === "chat" ? "text-primary" : "text-muted-foreground"}`}>
               Live Chat
-            </TabsTrigger>
-            <TabsTrigger value="profil" className="flex items-center gap-2">
-              <User className="w-4 h-4" />
+            </span>
+          </button>
+
+          <button 
+            onClick={() => setActiveTab("profil")}
+            className={`p-4 rounded-xl text-center transition-all ${
+              activeTab === "profil" 
+                ? "bg-white shadow-lg border-2 border-primary/20 scale-105" 
+                : "bg-white shadow-md hover:shadow-lg hover:scale-105"
+            }`}
+          >
+            <div className={`w-12 h-12 mx-auto mb-2 rounded-xl flex items-center justify-center ${
+              activeTab === "profil" ? "bg-gradient-to-br from-primary to-primary-glow" : "bg-muted"
+            }`}>
+              <User className={`w-6 h-6 ${activeTab === "profil" ? "text-white" : "text-muted-foreground"}`} />
+            </div>
+            <span className={`text-sm font-medium ${activeTab === "profil" ? "text-primary" : "text-muted-foreground"}`}>
               Profil
-            </TabsTrigger>
-          </TabsList>
+            </span>
+          </button>
+        </div>
+
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
 
           {/* Beranda Tab */}
           <TabsContent value="beranda" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card className="shadow-lg border-0 bg-gradient-to-br from-primary to-primary-glow text-white">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-white/80">Total Saldo</p>
-                      <p className="text-2xl font-bold">Rp {currentPartner.balance.toLocaleString()}</p>
+            {/* Promotional Banner */}
+            <Card className="border-0 bg-gradient-to-r from-primary via-primary-glow to-secondary text-white overflow-hidden relative">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <h2 className="text-2xl font-bold mb-2">Selamat Datang, {currentPartner.owner_name}!</h2>
+                    <p className="text-white/90 mb-4">Tingkatkan penghasilan dengan melayani lebih banyak pelanggan</p>
+                    <Button variant="secondary" className="bg-white text-primary hover:bg-white/90">
+                      Lihat Pesanan Baru
+                    </Button>
+                  </div>
+                  <div className="hidden md:block">
+                    <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center">
+                      <Briefcase className="w-12 h-12 text-white" />
                     </div>
-                    <Wallet className="w-8 h-8 text-white/80" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Card className="bg-white shadow-lg border-0 hover:shadow-xl transition-all duration-300">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-glow rounded-xl flex items-center justify-center">
+                      <Wallet className="w-6 h-6 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm text-muted-foreground font-medium">Total Saldo</p>
+                      <p className="text-2xl font-bold text-primary">Rp {currentPartner.balance.toLocaleString()}</p>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="shadow-lg border-0 bg-gradient-to-br from-secondary to-accent text-white">
+              <Card className="bg-white shadow-lg border-0 hover:shadow-xl transition-all duration-300">
                 <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-white/80">Pesanan Menunggu</p>
-                      <p className="text-2xl font-bold">{orders.length}</p>
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-secondary to-accent rounded-xl flex items-center justify-center">
+                      <ClipboardList className="w-6 h-6 text-white" />
                     </div>
-                    <ClipboardList className="w-8 h-8 text-white/80" />
+                    <div className="flex-1">
+                      <p className="text-sm text-muted-foreground font-medium">Pesanan Menunggu</p>
+                      <p className="text-2xl font-bold text-secondary">{orders.length}</p>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="shadow-lg border-0 bg-gradient-to-br from-success to-accent text-white">
+              <Card className="bg-white shadow-lg border-0 hover:shadow-xl transition-all duration-300">
                 <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-white/80">Pekerjaan Aktif</p>
-                      <p className="text-2xl font-bold">{myJobs.filter(job => job.status !== "completed").length}</p>
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-success to-accent rounded-xl flex items-center justify-center">
+                      <Briefcase className="w-6 h-6 text-white" />
                     </div>
-                    <Briefcase className="w-8 h-8 text-white/80" />
+                    <div className="flex-1">
+                      <p className="text-sm text-muted-foreground font-medium">Pekerjaan Aktif</p>
+                      <p className="text-2xl font-bold text-success">{myJobs.filter(job => job.status !== "completed").length}</p>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
             </div>
 
-            <Card className="shadow-lg">
-              <CardHeader>
-                <CardTitle>Status Terbaru</CardTitle>
-                <CardDescription>Informasi terkini tentang aktivitas Anda</CardDescription>
+            {/* Quick Actions */}
+            <Card className="bg-white shadow-lg border-0">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-bold">Aksi Cepat</CardTitle>
+                <CardDescription>Kelola aktivitas mitra dengan mudah</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3 p-3 bg-success/10 rounded-lg">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <button 
+                    onClick={() => setActiveTab("pesanan")}
+                    className="p-4 rounded-xl bg-primary/5 hover:bg-primary/10 border border-primary/20 transition-all hover:scale-105"
+                  >
+                    <ClipboardList className="w-8 h-8 text-primary mx-auto mb-2" />
+                    <p className="text-sm font-medium text-primary">Lihat Pesanan</p>
+                  </button>
+                  
+                  <button 
+                    onClick={() => setActiveTab("topup")}
+                    className="p-4 rounded-xl bg-secondary/5 hover:bg-secondary/10 border border-secondary/20 transition-all hover:scale-105"
+                  >
+                    <CreditCard className="w-8 h-8 text-secondary mx-auto mb-2" />
+                    <p className="text-sm font-medium text-secondary">Top Up Saldo</p>
+                  </button>
+                  
+                  <button 
+                    onClick={() => setActiveTab("chat")}
+                    className="p-4 rounded-xl bg-accent/5 hover:bg-accent/10 border border-accent/20 transition-all hover:scale-105"
+                  >
+                    <MessageCircle className="w-8 h-8 text-accent mx-auto mb-2" />
+                    <p className="text-sm font-medium text-accent">Live Chat</p>
+                  </button>
+                  
+                  <button 
+                    onClick={() => setActiveTab("profil")}
+                    className="p-4 rounded-xl bg-success/5 hover:bg-success/10 border border-success/20 transition-all hover:scale-105"
+                  >
+                    <User className="w-8 h-8 text-success mx-auto mb-2" />
+                    <p className="text-sm font-medium text-success">Edit Profil</p>
+                  </button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Status Information */}
+            <Card className="bg-white shadow-lg border-0">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-bold">Status Akun</CardTitle>
+                <CardDescription>Informasi terkini tentang akun mitra Anda</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 p-4 bg-success/10 rounded-xl border border-success/20">
                     <CheckCircle className="w-5 h-5 text-success" />
-                    <span className="text-sm">Akun Anda telah terverifikasi dan aktif</span>
+                    <span className="text-sm font-medium">Akun Anda telah terverifikasi dan aktif</span>
                   </div>
-                  <div className="flex items-center gap-3 p-3 bg-primary/10 rounded-lg">
+                  <div className="flex items-center gap-3 p-4 bg-primary/10 rounded-xl border border-primary/20">
                     <Wallet className="w-5 h-5 text-primary" />
-                    <span className="text-sm">Saldo saat ini: Rp {currentPartner.balance.toLocaleString()}</span>
+                    <span className="text-sm font-medium">Saldo tersedia: Rp {currentPartner.balance.toLocaleString()}</span>
                   </div>
                 </div>
               </CardContent>

@@ -15,19 +15,19 @@
     --popover: 0 0% 100%;
     --popover-foreground: 220 20% 12%;
 
-    /* Medical Blue Primary - Trust & Professional */
-    --primary: 210 95% 52%;
+    /* Professional Orange Primary - Modern & Trustworthy */
+    --primary: 22 95% 55%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 210 80% 65%;
+    --primary-glow: 32 95% 65%;
 
-    /* Healthcare Green Secondary - Health & Wellness */
-    --secondary: 142 76% 36%;
+    /* Professional Red Secondary - Accent & Energy */
+    --secondary: 10 85% 55%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 220 13% 91%;
     --muted-foreground: 220 10% 46%;
 
-    --accent: 145 73% 55%;
+    --accent: 35 90% 60%;
     --accent-foreground: 0 0% 100%;
 
     /* Medical Alert Red */
@@ -48,10 +48,11 @@
 
     --radius: 0.75rem;
 
-    /* Medical gradients */
+    /* Professional gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
     --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--accent)));
-    --gradient-bg: linear-gradient(180deg, hsl(var(--background)), hsl(220 20% 95%));
+    --gradient-bg: linear-gradient(180deg, hsl(var(--background)), hsl(25 20% 95%));
+    --gradient-hero: linear-gradient(135deg, hsl(22 95% 55%), hsl(10 85% 55%));
     
     /* Shadows for depth */
     --shadow-elegant: 0 4px 20px -8px hsl(var(--primary) / 0.3);
