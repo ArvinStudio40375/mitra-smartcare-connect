@@ -202,7 +202,6 @@ const MitraDashboard = () => {
       const { data, error } = await supabase
         .from("smartcare_orders" as any)
         .select("*")
-        .eq("partner_id", currentPartner.id)
         .in("status", ["dikonfirmasi", "sedang_dikerjakan", "selesai"])
         .order("created_at", { ascending: false });
 
@@ -233,10 +232,9 @@ const MitraDashboard = () => {
     setLoading(true);
     try {
       const { error } = await supabase
-        .from("orders")
+        .from("smartcare_orders" as any)
         .update({
-          partner_id: currentPartner.id,
-          status: "confirmed"
+          status: "dikonfirmasi"
         })
         .eq("id", order.id);
 
@@ -271,8 +269,8 @@ const MitraDashboard = () => {
 
     // Update status ke in_progress
     supabase
-      .from("orders")
-      .update({ status: "in_progress" })
+      .from("smartcare_orders" as any)
+      .update({ status: "sedang_dikerjakan" })
       .eq("id", orderId)
       .then(() => {
         toast({
@@ -307,8 +305,8 @@ const MitraDashboard = () => {
     try {
       // Update status pesanan
       const { error: orderError } = await supabase
-        .from("orders")
-        .update({ status: "completed" })
+        .from("smartcare_orders" as any)
+        .update({ status: "selesai" })
         .eq("id", order.id);
 
       if (orderError) throw orderError;
