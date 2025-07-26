@@ -10,11 +10,11 @@ interface Order {
   id: string;
   order_number: string;
   service_name: string;
-  service_price: number;
-  commission_amount: number;
-  total_amount: number;
+  price_per_hour: number;
+  total_amount?: number;
   status: string;
   created_at: string;
+  estimated_duration: number;
 }
 
 interface Partner {
@@ -25,8 +25,8 @@ interface Partner {
 }
 
 interface InvoiceModalProps {
-  order: Order;
-  partner: Partner;
+  order: any;
+  partner: any;
   trigger: React.ReactNode;
 }
 
@@ -70,8 +70,8 @@ Status          : Selesai ✅
 
 💰 RINCIAN BIAYA
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Tarif Layanan   : ${formatCurrency(order.service_price)}
-Komisi Mitra    : ${formatCurrency(order.commission_amount)} (15%)
+Tarif Layanan   : ${formatCurrency((order as any).price_per_hour)}/jam
+Komisi Mitra    : ${formatCurrency((order as any).price_per_hour * 0.15)} (15%)
 Total Dibayar   : ${formatCurrency(order.total_amount)}
 
 📅 INFORMASI WAKTU
@@ -208,11 +208,11 @@ SmartCare Indonesia! 🙏
               <div className="space-y-3">
                 <div className="flex justify-between text-lg">
                   <span>Tarif Layanan:</span>
-                  <span className="font-semibold">{formatCurrency(order.service_price)}</span>
+                  <span className="font-semibold">{formatCurrency((order as any).price_per_hour)}/jam</span>
                 </div>
                 <div className="flex justify-between text-sm text-muted-foreground">
                   <span>Komisi Mitra (15%):</span>
-                  <span>- {formatCurrency(order.commission_amount)}</span>
+                  <span>- {formatCurrency((order as any).price_per_hour * 0.15)}</span>
                 </div>
                 <hr />
                 <div className="flex justify-between text-xl font-bold text-primary">

@@ -57,24 +57,30 @@ interface Order {
   id: string;
   order_number: string;
   service_name: string;
-  service_price: number;
-  commission_amount: number;
-  total_amount: number;
+  price_per_hour: number;
+  total_amount?: number;
   status: string;
-  payment_status: string;
   created_at: string;
-  schedule_date?: string;
-  schedule_time?: string;
-  address?: string;
-  customer_notes?: string;
-  partner_notes?: string;
+  scheduled_date: string;
+  scheduled_time: string;
+  notes?: string;
+  user_id: string;
+  service_id: string;
+  address: string;
+  estimated_duration: number;
+  actual_duration?: number;
+  start_time?: string;
+  end_time?: string;
+  rating?: number;
+  review?: string;
+  updated_at: string;
 }
 
 const MitraDashboard = () => {
   const [currentPartner, setCurrentPartner] = useState<Partner | null>(null);
   const [activeTab, setActiveTab] = useState("beranda");
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [myJobs, setMyJobs] = useState<Order[]>([]);
+  const [orders, setOrders] = useState<any[]>([]);
+  const [myJobs, setMyJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [topupData, setTopupData] = useState({
     amount: "",
@@ -173,13 +179,13 @@ const MitraDashboard = () => {
   const loadOrders = async () => {
     try {
       const { data, error } = await supabase
-        .from("orders")
+        .from("smartcare_orders" as any)
         .select("*")
-        .eq("status", "pending")
+        .eq("status", "menunggu_konfirmasi")
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      setOrders(data || []);
+      setOrders((data as any[]) || []);
     } catch (error: any) {
       toast({
         title: "Error",
@@ -194,14 +200,14 @@ const MitraDashboard = () => {
     
     try {
       const { data, error } = await supabase
-        .from("orders")
+        .from("smartcare_orders" as any)
         .select("*")
         .eq("partner_id", currentPartner.id)
-        .in("status", ["confirmed", "in_progress", "completed"])
+        .in("status", ["dikonfirmasi", "sedang_dikerjakan", "selesai"])
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      setMyJobs(data || []);
+      setMyJobs((data as any[]) || []);
     } catch (error: any) {
       toast({
         title: "Error",
@@ -214,7 +220,7 @@ const MitraDashboard = () => {
   const acceptOrder = async (order: Order) => {
     if (!currentPartner) return;
 
-    const requiredBalance = order.service_price * 0.15;
+    const requiredBalance = (order as any).price_per_hour * 0.15;
     if (currentPartner.balance < requiredBalance) {
       toast({
         title: "Saldo Tidak Mencukupi",
@@ -308,7 +314,7 @@ const MitraDashboard = () => {
       if (orderError) throw orderError;
 
       // Potong saldo mitra
-      const commissionAmount = order.service_price * 0.15;
+      const commissionAmount = (order as any).price_per_hour * 0.15;
       const newBalance = currentPartner.balance - commissionAmount;
 
       const { error: partnerError } = await supabase
@@ -773,7 +779,7 @@ const MitraDashboard = () => {
                     </div>
                   ) : (
                     orders.map((order) => {
-                      const requiredBalance = order.service_price * 0.15;
+                      const requiredBalance = (order as any).price_per_hour * 0.15;
                       const canAccept = currentPartner.balance >= requiredBalance;
                       
                       return (
@@ -786,8 +792,8 @@ const MitraDashboard = () => {
                                   <Badge variant="outline">{order.order_number}</Badge>
                                 </div>
                                 <div className="space-y-1 text-sm text-muted-foreground">
-                                  <p>💰 Tarif: Rp {order.service_price.toLocaleString()}</p>
-                                  <p>📊 Komisi (15%): Rp {order.commission_amount.toLocaleString()}</p>
+                                  <p>💰 Tarif: Rp {(order as any).price_per_hour.toLocaleString()}/jam</p>
+                                  <p>📊 Komisi (15%): Rp {requiredBalance.toLocaleString()}</p>
                                   <p>📋 Saldo dibutuhkan: Rp {requiredBalance.toLocaleString()}</p>
                                   <p>📅 {new Date(order.created_at).toLocaleDateString('id-ID')}</p>
                                 </div>
@@ -867,8 +873,8 @@ const MitraDashboard = () => {
                                 </div>
                                 <div className="space-y-1 text-sm text-muted-foreground">
                                   <p>📋 {job.order_number}</p>
-                                  <p>💰 Tarif: Rp {job.service_price.toLocaleString()}</p>
-                                  <p>📊 Komisi: Rp {job.commission_amount.toLocaleString()}</p>
+                                  <p>💰 Tarif: Rp {(job as any).price_per_hour.toLocaleString()}/jam</p>
+                                  <p>📊 Komisi: Rp {((job as any).price_per_hour * 0.15).toLocaleString()}</p>
                                   {workingOrder && (
                                     <div className="flex items-center gap-2">
                                       <Timer className="w-4 h-4" />
@@ -1074,10 +1080,10 @@ const MitraDashboard = () => {
                               </Badge>
                             </td>
                             <td className="p-2 text-sm text-right font-medium">
-                              Rp {job.service_price.toLocaleString()}
+                              Rp {(job as any).price_per_hour.toLocaleString()}
                             </td>
                             <td className="p-2 text-sm text-right font-medium text-green-600">
-                              Rp {job.commission_amount.toLocaleString()}
+                              Rp {((job as any).price_per_hour * 0.15).toLocaleString()}
                             </td>
                           </tr>
                         ))
@@ -1140,7 +1146,7 @@ const MitraDashboard = () => {
                         <div>
                           <p className="text-sm text-gray-600">Total Komisi</p>
                           <p className="text-xl font-bold text-green-600">
-                            Rp {myJobs.reduce((total, job) => total + job.commission_amount, 0).toLocaleString()}
+                            Rp {myJobs.reduce((total, job) => total + ((job as any).price_per_hour * 0.15), 0).toLocaleString()}
                           </p>
                         </div>
                       </div>
@@ -1197,10 +1203,10 @@ const MitraDashboard = () => {
                               </Badge>
                             </td>
                             <td className="p-2 text-sm text-right">
-                              Rp {job.service_price.toLocaleString()}
+                              Rp {(job as any).price_per_hour.toLocaleString()}
                             </td>
                             <td className="p-2 text-sm text-right font-bold text-green-600">
-                              + Rp {job.commission_amount.toLocaleString()}
+                              + Rp {((job as any).price_per_hour * 0.15).toLocaleString()}
                             </td>
                           </tr>
                         ))
