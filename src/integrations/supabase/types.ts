@@ -125,6 +125,39 @@ export type Database = {
         }
         Relationships: []
       }
+      chat_smartcare: {
+        Row: {
+          created_at: string
+          file_url: string | null
+          id: string
+          message: string
+          message_type: string | null
+          room_id: string
+          sender_id: string
+          sender_type: string
+        }
+        Insert: {
+          created_at?: string
+          file_url?: string | null
+          id?: string
+          message: string
+          message_type?: string | null
+          room_id: string
+          sender_id: string
+          sender_type: string
+        }
+        Update: {
+          created_at?: string
+          file_url?: string | null
+          id?: string
+          message?: string
+          message_type?: string | null
+          room_id?: string
+          sender_id?: string
+          sender_type?: string
+        }
+        Relationships: []
+      }
       films: {
         Row: {
           created_at: string
@@ -167,6 +200,42 @@ export type Database = {
           created_at?: string
           id?: string
           ip_address?: string
+        }
+        Relationships: []
+      }
+      layanan: {
+        Row: {
+          created_at: string
+          deskripsi: string | null
+          harga_per_jam: number
+          icon: string | null
+          id: string
+          is_active: boolean | null
+          kategori: string
+          nama_layanan: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          deskripsi?: string | null
+          harga_per_jam: number
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          kategori: string
+          nama_layanan: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          deskripsi?: string | null
+          harga_per_jam?: number
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          kategori?: string
+          nama_layanan?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -402,6 +471,54 @@ export type Database = {
         }
         Relationships: []
       }
+      pesanan: {
+        Row: {
+          alamat: string
+          catatan: string | null
+          created_at: string
+          durasi: number
+          id: string
+          id_layanan: string
+          id_mitra: string | null
+          id_user: string
+          status: string
+          tanggal: string
+          total_harga: number | null
+          updated_at: string
+          waktu: string
+        }
+        Insert: {
+          alamat: string
+          catatan?: string | null
+          created_at?: string
+          durasi: number
+          id?: string
+          id_layanan: string
+          id_mitra?: string | null
+          id_user: string
+          status?: string
+          tanggal: string
+          total_harga?: number | null
+          updated_at?: string
+          waktu: string
+        }
+        Update: {
+          alamat?: string
+          catatan?: string | null
+          created_at?: string
+          durasi?: number
+          id?: string
+          id_layanan?: string
+          id_mitra?: string | null
+          id_user?: string
+          status?: string
+          tanggal?: string
+          total_harga?: number | null
+          updated_at?: string
+          waktu?: string
+        }
+        Relationships: []
+      }
       services: {
         Row: {
           availability_schedule: Json | null
@@ -451,6 +568,358 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      smartcare_chat: {
+        Row: {
+          attachment_url: string | null
+          created_at: string
+          id: string
+          is_read: boolean | null
+          message: string
+          message_type: string | null
+          room_id: string | null
+          sender_type: string
+          user_id: string
+        }
+        Insert: {
+          attachment_url?: string | null
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message: string
+          message_type?: string | null
+          room_id?: string | null
+          sender_type: string
+          user_id: string
+        }
+        Update: {
+          attachment_url?: string | null
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message?: string
+          message_type?: string | null
+          room_id?: string | null
+          sender_type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "smartcare_chat_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "smartcare_chat_rooms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "smartcare_chat_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "smartcare_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      smartcare_chat_rooms: {
+        Row: {
+          created_at: string | null
+          id: string
+          order_id: string | null
+          room_type: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          order_id?: string | null
+          room_type?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          order_id?: string | null
+          room_type?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "smartcare_chat_rooms_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "smartcare_orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "smartcare_chat_rooms_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "smartcare_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      smartcare_invoices: {
+        Row: {
+          created_at: string
+          duration_minutes: number
+          id: string
+          invoice_date: string | null
+          invoice_number: string
+          invoice_status: string | null
+          order_id: string
+          payment_status: string | null
+          price_per_hour: number
+          service_name: string
+          total_amount: number
+          watermark: string | null
+        }
+        Insert: {
+          created_at?: string
+          duration_minutes: number
+          id?: string
+          invoice_date?: string | null
+          invoice_number?: string
+          invoice_status?: string | null
+          order_id: string
+          payment_status?: string | null
+          price_per_hour: number
+          service_name: string
+          total_amount: number
+          watermark?: string | null
+        }
+        Update: {
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          invoice_date?: string | null
+          invoice_number?: string
+          invoice_status?: string | null
+          order_id?: string
+          payment_status?: string | null
+          price_per_hour?: number
+          service_name?: string
+          total_amount?: number
+          watermark?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "smartcare_invoices_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "smartcare_orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      smartcare_notifications: {
+        Row: {
+          created_at: string | null
+          data: Json | null
+          id: string
+          message: string
+          read_at: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          data?: Json | null
+          id?: string
+          message: string
+          read_at?: string | null
+          title: string
+          type?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          data?: Json | null
+          id?: string
+          message?: string
+          read_at?: string | null
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "smartcare_notifications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "smartcare_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      smartcare_orders: {
+        Row: {
+          actual_duration: number | null
+          address: string
+          created_at: string
+          end_time: string | null
+          estimated_duration: number
+          id: string
+          notes: string | null
+          order_number: string
+          price_per_hour: number
+          rating: number | null
+          review: string | null
+          scheduled_date: string
+          scheduled_time: string
+          service_id: string
+          service_name: string
+          start_time: string | null
+          status: string | null
+          total_amount: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          actual_duration?: number | null
+          address: string
+          created_at?: string
+          end_time?: string | null
+          estimated_duration: number
+          id?: string
+          notes?: string | null
+          order_number?: string
+          price_per_hour: number
+          rating?: number | null
+          review?: string | null
+          scheduled_date: string
+          scheduled_time: string
+          service_id: string
+          service_name: string
+          start_time?: string | null
+          status?: string | null
+          total_amount?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          actual_duration?: number | null
+          address?: string
+          created_at?: string
+          end_time?: string | null
+          estimated_duration?: number
+          id?: string
+          notes?: string | null
+          order_number?: string
+          price_per_hour?: number
+          rating?: number | null
+          review?: string | null
+          scheduled_date?: string
+          scheduled_time?: string
+          service_id?: string
+          service_name?: string
+          start_time?: string | null
+          status?: string | null
+          total_amount?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "smartcare_orders_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "smartcare_services"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "smartcare_orders_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "smartcare_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      smartcare_services: {
+        Row: {
+          base_price: number | null
+          category: string
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          is_active: boolean | null
+          price_per_hour: number
+          service_code: string
+          service_name: string
+          updated_at: string
+        }
+        Insert: {
+          base_price?: number | null
+          category: string
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          price_per_hour: number
+          service_code: string
+          service_name: string
+          updated_at?: string
+        }
+        Update: {
+          base_price?: number | null
+          category?: string
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          price_per_hour?: number
+          service_code?: string
+          service_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      smartcare_users: {
+        Row: {
+          address: string | null
+          balance: number | null
+          city: string | null
+          created_at: string
+          full_name: string
+          id: string
+          phone_number: string | null
+          status: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address?: string | null
+          balance?: number | null
+          city?: string | null
+          created_at?: string
+          full_name: string
+          id?: string
+          phone_number?: string | null
+          status?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address?: string | null
+          balance?: number | null
+          city?: string | null
+          created_at?: string
+          full_name?: string
+          id?: string
+          phone_number?: string | null
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       topup: {
         Row: {
@@ -620,6 +1089,39 @@ export type Database = {
         }
         Relationships: []
       }
+      users_smartcare: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          nama_lengkap: string
+          no_wa: string
+          password: string
+          role: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          nama_lengkap: string
+          no_wa: string
+          password: string
+          role?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          nama_lengkap?: string
+          no_wa?: string
+          password?: string
+          role?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       voucher_saldo: {
         Row: {
           amount: number
@@ -687,7 +1189,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_invoice_number: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      generate_order_number: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
